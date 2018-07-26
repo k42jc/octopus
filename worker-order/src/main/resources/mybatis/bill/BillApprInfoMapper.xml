@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dafy.octopus.worker.order.mapper.BillApprInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.dafy.octopus.worker.order.dto.BillApprInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="BILL_ID" property="billId" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="BIGINT" />
+    <result column="USER_DEPT_ID" property="userDeptId" jdbcType="BIGINT" />
+    <result column="DESC" property="desc" jdbcType="VARCHAR" />
+    <result column="RESULT" property="result" jdbcType="CHAR" />
+    <result column="USED_TIME" property="usedTime" jdbcType="VARCHAR" />
+    <result column="ATTACH_URL" property="attachUrl" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, BILL_ID, USER_ID, USER_DEPT_ID, `DESC`, RESULT, USED_TIME, ATTACH_URL, CREATE_TIME,
+    UPDATE_TIME, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_BILL_APPROVAL_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from T_BILL_APPROVAL_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dafy.octopus.worker.order.dto.BillApprInfo" >
+    insert into T_BILL_APPROVAL_INFO (ID, BILL_ID, USER_ID, 
+      USER_DEPT_ID, `DESC`, RESULT,
+      USED_TIME, ATTACH_URL, CREATE_TIME, 
+      UPDATE_TIME, STATUS)
+    values (#{id,jdbcType=BIGINT}, #{billId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{userDeptId,jdbcType=BIGINT}, #{desc,jdbcType=VARCHAR}, #{result,jdbcType=CHAR}, 
+      #{usedTime,jdbcType=VARCHAR}, #{attachUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dafy.octopus.worker.order.dto.BillApprInfo" >
+    insert into T_BILL_APPROVAL_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="billId != null" >
+        BILL_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="userDeptId != null" >
+        USER_DEPT_ID,
+      </if>
+      <if test="desc != null" >
+        `DESC`,
+      </if>
+      <if test="result != null" >
+        RESULT,
+      </if>
+      <if test="usedTime != null" >
+        USED_TIME,
+      </if>
+      <if test="attachUrl != null" >
+        ATTACH_URL,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="billId != null" >
+        #{billId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userDeptId != null" >
+        #{userDeptId,jdbcType=BIGINT},
+      </if>
+      <if test="desc != null" >
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=CHAR},
+      </if>
+      <if test="usedTime != null" >
+        #{usedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="attachUrl != null" >
+        #{attachUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dafy.octopus.worker.order.dto.BillApprInfo" >
+    update T_BILL_APPROVAL_INFO
+    <set >
+      <if test="billId != null" >
+        BILL_ID = #{billId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userDeptId != null" >
+        USER_DEPT_ID = #{userDeptId,jdbcType=BIGINT},
+      </if>
+      <if test="desc != null" >
+        `DESC` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        RESULT = #{result,jdbcType=CHAR},
+      </if>
+      <if test="usedTime != null" >
+        USED_TIME = #{usedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="attachUrl != null" >
+        ATTACH_URL = #{attachUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dafy.octopus.worker.order.dto.BillApprInfo" >
+    update T_BILL_APPROVAL_INFO
+    set BILL_ID = #{billId,jdbcType=BIGINT},
+      USER_ID = #{userId,jdbcType=BIGINT},
+      USER_DEPT_ID = #{userDeptId,jdbcType=BIGINT},
+      `DESC` = #{desc,jdbcType=VARCHAR},
+      RESULT = #{result,jdbcType=CHAR},
+      USED_TIME = #{usedTime,jdbcType=VARCHAR},
+      ATTACH_URL = #{attachUrl,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=CHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectReviewingByBillId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+     from T_BILL_APPROVAL_INFO where bill_id=#{billId} and `status`='1'
+  </select>
+</mapper>

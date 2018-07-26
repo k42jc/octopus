@@ -1,0 +1,71 @@
+#web服务器配置
+server:
+  port: 8888
+  undertow:
+    #io-threads: 128 #默认cpu核心数 最小2
+    worker-threads: 500 #默认io-threads * 8
+    #max-http-post-size:
+  session:
+    timeout: 1800
+##日志配置
+logging:
+  file: logs/octopus-dev.log
+  level:
+    root: ERROR
+    com.apache: DEBUG
+    com.dafy: DEBUG
+  pattern: #使用Spring源码里面的支持命令行高亮的logback语法
+  #${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5p) %clr(${PID:- }){magenta} %clr(-){faint} %clr([%t]){faint} %clr(%-40.40logger{39}){cyan} %clr([%L]) %clr(:){faint} %m%n%wEx'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } - [%t] %-40.40logger{39} [%L] : %m%n%wEx'
+#spring相关配置
+spring:
+  #数据源
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://host:3306/octopus_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: db_user
+    password: db_pwd
+#    write: 动态数据源时，搭配DynamicDataSourceConfig使用，将30-39行注释放开
+#      driverClassName: com.mysql.jdbc.Driver
+#      url: jdbc:mysql://host:3306/octopus_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#      username: db_user
+#      password: db_pwd
+#    read:
+#      driverClassName: com.mysql.jdbc.Driver
+#      url: jdbc:mysql://xjyc-svr1:3306/octopus_base?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#      username: db_user
+#      password: db_pwd
+  #redis
+  redis:
+    host: host
+    port: 6379
+  #文件上传限制
+  http.multipart:
+    max-file-size: 10Mb
+    max-request-size: 15Mb
+#本项目配置
+config:
+  #线程池配置
+  threadPool:
+    coreThreads: 9
+    maxThreads: 19
+    queueSize: 50
+    namePrefix: dafy-
+  #httpClient配置
+  httpClient:
+    poolMaxTotal: 500
+    defaultPreRoutes: 250
+    requestTimeOut: 30000
+    connectTimeOut: 30000
+    socketTimeOut: 30000
+  cache:
+    defaultExpireTime: 86400 #默认一天过期
+  demo:
+    url:
+      index: http://host/auth-center
+      swagger-ui: http://host/auth-center/swagger-ui.html
+      swagger-ui2: http://host/mobile-rental/swagger-ui.html
+      swagger-ui3: http://host/worker-order/swagger-ui.html
+

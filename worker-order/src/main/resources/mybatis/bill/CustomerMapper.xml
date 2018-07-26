@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dafy.octopus.worker.order.mapper.CustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.dafy.octopus.worker.order.dto.Customer" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="CHAR" />
+    <result column="PHONENO" property="phoneno" jdbcType="VARCHAR" />
+    <result column="CONNECT_USER" property="connectUser" jdbcType="VARCHAR" />
+    <result column="CONNECT_USER_PHONE" property="connectUserPhone" jdbcType="VARCHAR" />
+    <result column="CALL_TIME" property="callTime" jdbcType="TIMESTAMP" />
+    <result column="DESC" property="desc" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, `NAME`, SEX, PHONENO, CONNECT_USER, CONNECT_USER_PHONE, CALL_TIME, `DESC`, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_CUSTOMER_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from T_CUSTOMER_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dafy.octopus.worker.order.dto.Customer" >
+    insert into T_CUSTOMER_INFO (ID, `NAME`, SEX, PHONENO,
+      CONNECT_USER, CONNECT_USER_PHONE, CALL_TIME, 
+      `DESC`, CREATE_TIME)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{phoneno,jdbcType=VARCHAR}, 
+      #{connectUser,jdbcType=VARCHAR}, #{connectUserPhone,jdbcType=VARCHAR}, #{callTime,jdbcType=TIMESTAMP}, 
+      #{desc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dafy.octopus.worker.order.dto.Customer" useGeneratedKeys="true" keyProperty="id">
+    insert into T_CUSTOMER_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="phoneno != null" >
+        PHONENO,
+      </if>
+      <if test="connectUser != null" >
+        CONNECT_USER,
+      </if>
+      <if test="connectUserPhone != null" >
+        CONNECT_USER_PHONE,
+      </if>
+      <if test="callTime != null" >
+        CALL_TIME,
+      </if>
+      <if test="desc != null" >
+        `DESC`,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="phoneno != null" >
+        #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="connectUser != null" >
+        #{connectUser,jdbcType=VARCHAR},
+      </if>
+      <if test="connectUserPhone != null" >
+        #{connectUserPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="callTime != null" >
+        #{callTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null" >
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dafy.octopus.worker.order.dto.Customer" >
+    update T_CUSTOMER_INFO
+    <set >
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="phoneno != null" >
+        PHONENO = #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="connectUser != null" >
+        CONNECT_USER = #{connectUser,jdbcType=VARCHAR},
+      </if>
+      <if test="connectUserPhone != null" >
+        CONNECT_USER_PHONE = #{connectUserPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="callTime != null" >
+        CALL_TIME = #{callTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null" >
+        `DESC` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dafy.octopus.worker.order.dto.Customer" >
+    update T_CUSTOMER_INFO
+    set `NAME` = #{name,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=CHAR},
+      PHONENO = #{phoneno,jdbcType=VARCHAR},
+      CONNECT_USER = #{connectUser,jdbcType=VARCHAR},
+      CONNECT_USER_PHONE = #{connectUserPhone,jdbcType=VARCHAR},
+      CALL_TIME = #{callTime,jdbcType=TIMESTAMP},
+      `DESC` = #{desc,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

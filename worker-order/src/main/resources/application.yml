@@ -1,0 +1,16 @@
+#本文件存放公用配置，不管开发、测试、生产都适用
+#服务器运行时额外通过java -jar app.jar --name="Spring" --server.port=9090方式来传递参数
+#spring相关配置
+spring:
+  profiles:
+    active: @profiles.active@
+#    active: local
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: 'GMT+8' #解决返回到前端时间相差8小时的问题
+#服务器配置 fix issue context-path需要与前端请求的path对应，否则shiro的会话session失效
+server:
+  context-path: /worker-order
+#预处理不拦截的请求
+mybatis:
+  mapper-locations: classpath:mybatis/*/*Mapper.xml

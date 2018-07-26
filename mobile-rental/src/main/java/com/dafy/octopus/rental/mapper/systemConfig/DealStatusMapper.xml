@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dafy.octopus.rental.mapper.systemConfig.DealStatusMapper">
+
+    <resultMap type="com.dafy.octopus.rental.dto.VO.systemConfig.DealStatusVO" id="dealStatusResult">
+        <result property="id" column="id" javaType="java.lang.Integer"/>
+        <result property="name" column="name" javaType="java.lang.String"/>
+    </resultMap>
+
+    <select id="get" parameterType="java.lang.Integer" resultMap="dealStatusResult">
+        select * from deal_status where id=#{id}
+    </select>
+
+    <select id="getAll"  resultMap="dealStatusResult">
+        select * from deal_status
+    </select>
+    
+    <insert id="add" parameterType="com.dafy.octopus.rental.dto.DO.systemConfig.DealStatusDO" useGeneratedKeys="true" keyProperty="id">
+        insert into deal_status (`name`,create_date)
+        values (#{name},#{createDate})
+    </insert>
+
+    <update id="update" parameterType="com.dafy.octopus.rental.dto.DO.systemConfig.DealStatusDO" >
+        update deal_status
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from deal_status where id = #{id}
+    </delete>
+</mapper>

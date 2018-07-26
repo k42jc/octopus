@@ -1,0 +1,16 @@
+#本文件存放公用配置，不管开发、测试、生产都适用
+#服务器运行时额外通过java -jar app.jar --name="Spring" --server.port=9090方式来传递参数
+#spring相关配置
+spring:
+  profiles:
+    active: local
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: 'GMT+8' #解决返回到前端时间相差8小时的问题
+#服务器配置 fix issue context-path需要与前端请求的path对应，否则shiro的会话session失效
+server:
+  context-path: /auth-center #/cssys-api
+#预处理不拦截的请求
+#FIXME 在这里配置mapper.xml通过springboot加载确一直失效，幸好前些天一直在看mybatis源码,发现需要在DynamicDataSourceConfig注册时手动加入mapperLocations才正常，无奈，见项目下的DynamicDataSourceConfig
+mybatis:
+  mapper-locations: classpath:mybatis/*/*Mapper.xml

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dafy.octopus.auth.mapper.OpLogMapper" >
+  <resultMap id="BaseResultMap" type="com.dafy.octopus.web.core.dto.OpLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="op_no" property="opNo" jdbcType="VARCHAR" />
+    <result column="op_type" property="opType" jdbcType="VARCHAR" />
+    <result column="op_ip" property="opIp" jdbcType="VARCHAR" />
+    <result column="op_user_id" property="userId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.dafy.octopus.web.core.dto.OpLog" extends="BaseResultMap" >
+    <result column="desc" property="desc" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithUser" type="com.dafy.octopus.web.core.dto.OpLog" extends="ResultMapWithBLOBs" >
+    <association property="user" javaType="com.dafy.octopus.web.core.dto.User">
+      <id column="user_id" property="id" jdbcType="BIGINT" />
+      <result column="user_code" property="userCode" jdbcType="VARCHAR" />
+      <result column="username" property="userName" jdbcType="VARCHAR" />
+      <result column="phoneno" property="phoneNo" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="status" property="status" jdbcType="CHAR" />
+      <!--<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />-->
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, op_no, op_type,op_user_id, op_ip, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    `desc`
+  </sql>
+  <select id="selectList" resultMap="ResultMapWithUser" parameterType="java.util.Map">
+    select o.*,u.id user_id,u.user_code,u.username,u.phoneno,u.email,u.`status` from T_OP_LOG o
+    left join T_USER u on o.op_user_id = u.id
+    <where>
+        <if test="params.condition != null and params.condition != ''">
+          and (u.user_code like '%${params.condition}%' or u.username like '%${params.condition}%')
+        </if>
+        <if test="params.startTime != null and params.endTime != null">
+          and DATE(o.create_time) BETWEEN #{params.startTime} and #{params.endTime}
+        </if>
+    </where>
+    order by o.create_time desc
+  </select>
+  <insert id="insertSelective" parameterType="com.dafy.octopus.web.core.dto.OpLog" >
+    insert into T_OP_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        op_user_id,
+      </if>
+      <if test="opNo != null" >
+        op_no,
+      </if>
+      <if test="opType != null" >
+        op_type,
+      </if>
+      <if test="opIp != null" >
+        op_ip,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="desc != null" >
+        `desc`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="opNo != null" >
+        #{opNo,jdbcType=VARCHAR},
+      </if>
+      <if test="opType != null" >
+        #{opType,jdbcType=VARCHAR},
+      </if>
+      <if test="opIp != null" >
+        #{opIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null" >
+        #{desc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

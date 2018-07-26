@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dafy.octopus.rental.mapper.serverInfo.ServerInfoMapper">
+
+    <resultMap type="com.dafy.octopus.rental.dto.VO.serverInfo.ServerInfoVO" id="serverInfoResult">
+        <result property="id" column="id" javaType="java.lang.Long"/>
+        <result property="serverCode" column="server_code" javaType="java.lang.String"/>
+        <result property="serverOrderCode" column="server_order_code" javaType="java.lang.String"/>
+        <result property="userId" column="user_id" javaType="java.lang.String"/>
+        <result property="handlerId" column="handler_id" javaType="java.lang.String"/>
+        <result property="sourceTypeName" column="source_type_name" javaType="java.lang.String"/>
+        <result property="productTypeName" column="product_type_name" javaType="java.lang.String"/>
+        <result property="goodsTypeName" column="goods_type_name" javaType="java.lang.String"/>
+        <result property="dealRecordContent" column="deal_record_content" javaType="java.lang.String"/>
+        <result property="dealStatusName" column="deal_status_name" javaType="java.lang.String"/>
+        <result property="workerCode" column="worker_code" javaType="java.lang.String"/>
+        <result property="sourceTypeId" column="source_type_id" javaType="java.lang.Integer"/>
+        <result property="productTypeId" column="product_type_id" javaType="java.lang.Integer"/>
+        <result property="goodsTypeId" column="goods_type_id" javaType="java.lang.Long"/>
+        <result property="dealStatusId" column="deal_status_id" javaType="java.lang.Integer"/>
+        <result property="createDate" column="create_date" javaType="java.util.Date"/>
+    </resultMap>
+
+    <select id="get" parameterType="java.lang.Long" resultMap="serverInfoResult">
+        select * from server_info where id=#{id}
+    </select>
+
+    <select id="getByUserId" parameterType="java.lang.String" resultMap="serverInfoResult">
+        select * from server_info where user_id=#{userId} ORDER BY id DESC
+    </select>
+
+
+    <insert id="add" parameterType="com.dafy.octopus.rental.dto.DO.serverInfo.ServerInfoDO" useGeneratedKeys="true" keyProperty="id">
+        insert into server_info (worker_code,`server_code`,`server_order_code`,`user_id`,`handler_id`,`source_type_name`,`product_type_name`,
+        `goods_type_name`,`deal_record_content`,`deal_status_name`,`source_type_id`,`product_type_id`,`goods_type_id`,`deal_status_id`,create_date)
+        values (#{workerCode},#{serverCode},#{serverOrderCode},#{userId},#{handlerId},#{sourceTypeName},#{productTypeName},#{goodsTypeName},
+        #{dealRecordContent},#{dealStatusName},#{sourceTypeId},#{productTypeId},#{goodsTypeId},#{dealStatusId},#{createDate})
+    </insert>
+
+    <update id="update" parameterType="com.dafy.octopus.rental.dto.DO.serverInfo.ServerInfoDO" >
+        update server_info
+        <set>
+            <if test="dealRecordContent != null">
+                `deal_record_content` = #{dealRecordContent},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from server_info where id = #{id}
+    </delete>
+</mapper>

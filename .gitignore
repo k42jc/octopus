@@ -1,0 +1,10 @@
+.idea
+*.iml
+logs
+*/target
+*/*.iml
+*/logs
+/target
+*.jar
+*.zip
+*.MF

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dafy.octopus.rental.mapper.serverInfo.ServerInfoGoodsTypeMapper">
+
+    <resultMap type="com.dafy.octopus.rental.dto.VO.serverInfo.ServerInfoGoodsTypeVO" id="serverInfoGoodsTypeResult">
+        <result property="id" column="id" javaType="java.lang.Long"/>
+        <result property="goodsId" column="goods_id" javaType="java.lang.Long"/>
+        <result property="levelIndex" column="level_index" javaType="java.lang.Integer"/>
+        <result property="serverInfoId" column="server_info_id" javaType="java.lang.Long"/>
+        <result property="name" column="name" javaType="java.lang.String"/>
+    </resultMap>
+
+    <select id="get" parameterType="java.lang.Long" resultMap="serverInfoGoodsTypeResult">
+        select * from server_info_goods_type where id=#{id}
+    </select>
+
+    <select id="getByServerInfoId" parameterType="java.lang.Long" resultMap="serverInfoGoodsTypeResult">
+        select * from server_info_goods_type where server_info_id=#{serverInfoId} ORDER BY level_index ASC
+    </select>
+
+    <insert id="add" parameterType="com.dafy.octopus.rental.dto.DO.serverInfo.ServerInfoGoodsTypeDO" useGeneratedKeys="true" keyProperty="id">
+        insert into server_info_goods_type (`name`,`goods_id`,`level_index`,`server_info_id`,create_date)
+        values (#{name},#{goodsId},#{levelIndex},#{serverInfoId},#{createDate})
+    </insert>
+
+    <update id="update" parameterType="com.dafy.octopus.rental.dto.DO.serverInfo.ServerInfoGoodsTypeDO" >
+        update server_info_goods_type
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from server_info_goods_type where id = #{id}
+    </delete>
+</mapper>

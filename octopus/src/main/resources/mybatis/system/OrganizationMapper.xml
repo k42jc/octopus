@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dafy.octopus.auth.mapper.OrgMapper" >
+  <resultMap id="BaseResultMap" type="com.dafy.octopus.web.core.dto.Organization" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="addr" property="addr" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ParentOrgResultMap" type="com.dafy.octopus.web.core.dto.Organization" extends="BaseResultMap">
+    <association property="parentOrg" javaType="com.dafy.octopus.web.core.dto.Organization">
+      <id column="pid" property="id" jdbcType="BIGINT" />
+      <result column="pcode" property="code" jdbcType="VARCHAR" />
+      <result column="pname" property="name" jdbcType="VARCHAR" />
+      <result column="paddr" property="addr" jdbcType="VARCHAR" />
+      <result column="ptel" property="tel" jdbcType="VARCHAR" />
+      <result column="pprincipal" property="principal" jdbcType="VARCHAR" />
+      <result column="pparent_id" property="parentId" jdbcType="BIGINT" />
+      <result column="pdesc" property="desc" jdbcType="VARCHAR" />
+      <result column="pstatus" property="status" jdbcType="CHAR" />
+      <result column="pcreate_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="pupdate_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, `name`, addr, tel, principal, parent_id, `desc`, status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_ORGANIZATION
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from T_ORGANIZATION
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dafy.octopus.web.core.dto.Organization" >
+    insert into T_ORGANIZATION (id, code, `name`,
+      addr, tel, principal, 
+      parent_id, `desc`, status,
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{addr,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=BIGINT}, #{desc,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dafy.octopus.web.core.dto.Organization" >
+    insert into T_ORGANIZATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="addr != null" >
+        addr,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="principal != null" >
+        principal,
+      </if>
+      <if test="parentId != null and parentId != 0" >
+        parent_id,
+      </if>
+      <if test="desc != null" >
+        `desc`,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="principal != null" >
+        #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null and parentId != 0" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="desc != null" >
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dafy.octopus.web.core.dto.Organization" >
+    update T_ORGANIZATION
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="principal != null" >
+        principal = #{principal,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null and parentId != 0" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="desc != null" >
+        `desc` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dafy.octopus.web.core.dto.Organization" >
+    update T_ORGANIZATION
+    set code = #{code,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      addr = #{addr,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      principal = #{principal,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      `desc` = #{desc,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findOrgs" resultMap="ParentOrgResultMap">
+    select o.id,o.code,o.name,o.addr,o.tel,o.principal,o.desc,o.status,o.parent_id,o.create_time,o.update_time,
+      p.id pid,p.code pcode,p.name pname,p.addr paddr,p.tel ptel,p.principal pprincipal,p.desc pdesc,p.status pstatus,p.parent_id pparent_id,p.create_time pcreate_time,p.update_time pupdate_time
+     from T_ORGANIZATION o LEFT JOIN T_ORGANIZATION p on o.parent_id=p.id
+  </select>
+</mapper>

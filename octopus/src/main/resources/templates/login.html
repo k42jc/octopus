@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>learn Resources</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<div style="text-align: center;margin:0 auto;width: 1000px; ">
+    <h1>登录</h1>
+    <br/>
+    <form action="/auth-center/doLogin" method="post">
+        用户名：<input name="username" /><br/><br/>
+        密&nbsp;&nbsp;&nbsp;码：<input name="password" /><br/><br/>
+        自动登录：<input type="checkbox" name="rememberMe" checked="checked" value="true"/><br/><br/>
+        <input type="submit" value="登录"/><br/>
+    </form>
+</div>
+</body>
+</html>

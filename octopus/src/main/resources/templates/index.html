@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>learn Resources</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<div style="text-align: center;margin:0 auto;width: 1000px; ">
+    <h1>默认页面</h1>
+    <div th:if="${currentUser != null}">
+        当前登录用户：<p th:text="${currentUser}"></p>
+        <form action="/auth-center/doLogout" method="post">
+            <input type="submit" value="退出"/><br/>
+        </form>
+    </div>
+    <table width="100%" border="1" cellspacing="1" cellpadding="0">
+        <tr>
+            <td>说明</td>
+            <td>链接</td>
+            <td>是否需要登录</td>
+        </tr>
+        <!--/*@thymesVar id="learnList" type=""*/-->
+        <tr>
+            <td >首页</td>
+            <td><a href="/auth-center" target="_blank" th:text="${indexUrl}"></a></td>
+            <td >否</td>
+        </tr>
+        <!--<tr>
+            <td >登录页</td>
+            <td><a href="/auth-center/login" target="_blank">http://localhost:8888/auth-center/login</a></td>
+            <td >否</td>
+        </tr>-->
+        <tr>
+            <td >swagger API接口文档</td>
+            <td><a href="/auth-center/swagger-ui.html" target="_blank" th:text="${swaggerUrl}"></a></td>
+            <td >是</td>
+        </tr>
+        <tr>
+            <td >手机租赁接口文档</td>
+            <td><a href="/mobile-rental/swagger-ui.html" target="_blank" th:text="${swaggerUrl2}"></a></td>
+            <td >是</td>
+        </tr>
+        <tr>
+            <td >工单系统接口文档</td>
+            <td><a href="/worker-order/swagger-ui.html" target="_blank" th:text="${swaggerUrl3}"></a></td>
+            <td >是</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

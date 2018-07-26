@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dafy.octopus.worker.order.mapper.BillMapper" >
+  <!--<cache type="com.dafy.dal.cache.RedisMybatisCache"/>-->
+  <resultMap id="BaseResultMap" type="com.dafy.octopus.worker.order.dto.Bill" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CREATE_ORG" property="createOrgId" jdbcType="BIGINT" />
+    <result column="DEAL_ORG" property="dealOrgId" jdbcType="BIGINT" />
+    <result column="DEAL_USER" property="dealUserId" jdbcType="BIGINT" />
+    <result column="PARENT_BILL_NO" property="parentBillNo" jdbcType="VARCHAR" />
+    <result column="BILL_NO" property="billNo" jdbcType="VARCHAR" />
+    <result column="BILL_STATUS" property="billStatusId" jdbcType="BIGINT" />
+    <result column="URGENT_LEVEL" property="urgentLevelId" jdbcType="BIGINT" />
+    <result column="BILL_TYPE" property="billTypeId" jdbcType="BIGINT" />
+    <result column="BIZ_TYPE" property="bizTypeId" jdbcType="BIGINT" />
+    <result column="BIZ_DETAIL_TYPE" property="bizDetailTypeId" jdbcType="BIGINT" />
+    <result column="BILL_SOURCE" property="billSourceId" jdbcType="BIGINT" />
+    <result column="ANSWER_TIME" property="answerTime" jdbcType="TIMESTAMP" />
+    <result column="CUSTOMER_ID" property="customerId" jdbcType="BIGINT" />
+    <result column="CONNECTOR" property="connector" jdbcType="VARCHAR" />
+    <result column="CONNECTOR_PHONE" property="connectorPhone" jdbcType="VARCHAR" />
+    <result column="DESC" property="desc" jdbcType="VARCHAR" />
+    <result column="ATTACH_URL" property="attachUrl" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="CREATE_USER" property="createUserId" jdbcType="BIGINT" />
+    <result column="PRESS_TIMES" property="pressTimes" jdbcType="BIGINT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="BELONGS_ORG" property="belongsOrgId" jdbcType="BIGINT" />
+  </resultMap>
+    <!--ORM 对象字段关系映射配置 -->
+  <resultMap id="ListResultMap" type="com.dafy.octopus.worker.order.dto.Bill" extends="BaseResultMap">
+    <result column="intrust_times" property="intrustTimes" jdbcType="BIGINT" />
+    <!-- 工单状态-->
+    <association property="billStatus" javaType="com.dafy.octopus.worker.order.dto.SysConfig">
+      <id column="bs_id" property="id" jdbcType="BIGINT" />
+      <result column="bs_type" property="type" jdbcType="VARCHAR" />
+      <result column="bs_code" property="code" jdbcType="VARCHAR" />
+      <result column="bs_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 紧急程度-->
+    <association property="urgentLevel" javaType="com.dafy.octopus.worker.order.dto.SysConfig">
+      <id column="ul_id" property="id" jdbcType="BIGINT" />
+      <result column="ul_type" property="type" jdbcType="VARCHAR" />
+      <result column="ul_code" property="code" jdbcType="VARCHAR" />
+      <result column="ul_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 工单来源-->
+    <association property="billSource" javaType="com.dafy.octopus.worker.order.dto.SysConfig">
+      <id column="bso_id" property="id" jdbcType="BIGINT" />
+      <result column="bso_type" property="type" jdbcType="VARCHAR" />
+      <result column="bso_code" property="code" jdbcType="VARCHAR" />
+      <result column="bso_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 工单类型-->
+    <association property="billType" javaType="com.dafy.octopus.worker.order.dto.BillType">
+      <id column="blt_id" property="id" jdbcType="BIGINT" />
+      <result column="blt_code" property="code" jdbcType="VARCHAR" />
+      <result column="blt_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 业务类型 二级菜单-->
+    <association property="bizType" javaType="com.dafy.octopus.worker.order.dto.BizType">
+      <id column="bzt_id" property="id" jdbcType="BIGINT" />
+      <result column="blt_id" property="billTypeId" jdbcType="BIGINT" />
+      <result column="bzt_code" property="code" jdbcType="VARCHAR" />
+      <result column="bzt_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 业务详情类型 三级-->
+    <association property="bizDetailType" javaType="com.dafy.octopus.worker.order.dto.BizDetailType">
+      <id column="bzdt_id" property="id" jdbcType="BIGINT" />
+      <result column="bzt_id" property="bizTypeId" jdbcType="BIGINT" />
+      <result column="bzdt_code" property="code" jdbcType="VARCHAR" />
+      <result column="bzdt_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 客户信息 -->
+    <association property="customerInfo" javaType="com.dafy.octopus.worker.order.dto.Customer">
+      <id column="customer_id" property="id" jdbcType="BIGINT" />
+        <result column="customer_name" property="name" jdbcType="VARCHAR" />
+        <result column="customer_sex" property="sex" jdbcType="CHAR" />
+        <result column="customer_phoneno" property="phoneno" jdbcType="VARCHAR" />
+        <result column="customer_callTime" property="callTime" jdbcType="TIMESTAMP" />
+    </association>
+      <!-- 工单当前处理所在部门信息 -->
+      <association property="dealOrg" javaType="com.dafy.octopus.web.core.dto.Organization">
+          <id column="deal_org" property="id" jdbcType="BIGINT" />
+      </association>
+      <!--工单当前处理用户信息 -->
+      <association property="dealUser" javaType="com.dafy.octopus.web.core.dto.User">
+          <id column="deal_user" property="id" jdbcType="BIGINT" />
+      </association>
+      <!-- 工单创建部门信息 -->
+      <association property="createOrg" javaType="com.dafy.octopus.web.core.dto.Organization">
+          <id column="create_org" property="id" jdbcType="BIGINT" />
+      </association>
+    <!--工单所属用户信息 -->
+    <association property="createUser" javaType="com.dafy.octopus.web.core.dto.User">
+      <id column="create_user" property="id" jdbcType="BIGINT" />
+    </association>
+    <!-- 审批信息 -->
+    <association property="apprInfo" javaType="com.dafy.octopus.worker.order.dto.BillApprInfo">
+      <id column="apprInfo_id" property="id" jdbcType="BIGINT" />
+      <result column="apprInfo_createTime" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="apprInfo_usedTime" property="usedTime" jdbcType="VARCHAR" />
+      <result column="apprInfo_result" property="result" jdbcType="VARCHAR" />
+      <result column="apprInfo_user" property="userId" jdbcType="BIGINT" />
+      <result column="apprInfo_dept" property="userDeptId" jdbcType="BIGINT" />
+      <result column="apprInfo_desc" property="desc" jdbcType="VARCHAR" />
+    </association>
+    <!-- 处理信息 -->
+    <association property="dealInfo" javaType="com.dafy.octopus.worker.order.dto.BillDealInfo">
+      <id column="dealInfo_id" property="id" jdbcType="BIGINT" />
+      <result column="dealInfo_createTime" property="createTime" jdbcType="VARCHAR" />
+      <result column="dealInfo_usedTime" property="usedTime" jdbcType="VARCHAR" />
+      <result column="dealInfo_problem" property="problem" jdbcType="VARCHAR" />
+      <result column="dealInfo_subProblem" property="subProblem" jdbcType="BIGINT" />
+      <result column="dealInfo_revi" property="reVisit" jdbcType="VARCHAR" />
+      <result column="dealInfo_reviTime" property="reVisitTime" jdbcType="TIMESTAMP" />
+      <result column="dealInfo_result" property="result" jdbcType="VARCHAR" />
+      <result column="dealInfo_user" property="userId" jdbcType="BIGINT" />
+      <result column="dealInfo_dept" property="userDeptId" jdbcType="BIGINT" />
+      <result column="dealInfo_desc" property="desc" jdbcType="VARCHAR" />
+      <result column="dealInfo_attachUrl" property="attachUrl" jdbcType="VARCHAR" />
+      <result column="dealInfo_status" property="status" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <!-- 工单详情结果集映射 -->
+  <resultMap id="DetaiResultMap" type="com.dafy.octopus.worker.order.dto.Bill" extends="BaseResultMap">
+    <!-- 工单信息 -->
+    <result column="billStatusId" property="billStatusId" jdbcType="BIGINT"/>
+    <result column="billSourceId" property="billSourceId" jdbcType="BIGINT"/>
+    <result column="billTypeId" property="billTypeId" jdbcType="BIGINT"/>
+    <result column="bizTypeId" property="bizTypeId" jdbcType="BIGINT"/>
+    <result column="bizDetailTypeId" property="bizDetailTypeId" jdbcType="BIGINT"/>
+    <!-- 客户信息 -->
+    <association property="customerInfo" javaType="com.dafy.octopus.worker.order.dto.Customer">
+      <id column="customer_id" property="id" jdbcType="BIGINT" />
+      <result column="customer_name" property="name" jdbcType="VARCHAR" />
+      <result column="customer_sex" property="sex" jdbcType="CHAR" />
+      <result column="customer_phoneno" property="phoneno" jdbcType="VARCHAR" />
+      <result column="customer_callTime" property="callTime" jdbcType="TIMESTAMP" />
+    </association>
+    <!-- 工单类型-->
+    <association property="billType" javaType="com.dafy.octopus.worker.order.dto.BillType">
+      <id column="blt_id" property="id" jdbcType="BIGINT" />
+      <result column="blt_code" property="code" jdbcType="VARCHAR" />
+      <result column="blt_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 业务类型 二级菜单-->
+    <association property="bizType" javaType="com.dafy.octopus.worker.order.dto.BizType">
+      <id column="bzt_id" property="id" jdbcType="BIGINT" />
+      <result column="blt_id" property="billTypeId" jdbcType="BIGINT" />
+      <result column="bzt_code" property="code" jdbcType="VARCHAR" />
+      <result column="bzt_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 业务详情类型 三级-->
+    <association property="bizDetailType" javaType="com.dafy.octopus.worker.order.dto.BizDetailType">
+      <id column="bzdt_id" property="id" jdbcType="BIGINT" />
+      <result column="bzt_id" property="bizTypeId" jdbcType="BIGINT" />
+      <result column="bzdt_code" property="code" jdbcType="VARCHAR" />
+      <result column="bzdt_name" property="name" jdbcType="VARCHAR" />
+    </association>
+    <!-- 审批信息 -->
+    <association property="apprInfo" javaType="com.dafy.octopus.worker.order.dto.BillApprInfo">
+      <id column="apprInfo_id" property="id" jdbcType="BIGINT" />
+      <result column="apprInfo_createTime" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="apprInfo_usedTime" property="usedTime" jdbcType="VARCHAR" />
+      <result column="apprInfo_result" property="result" jdbcType="VARCHAR" />
+      <result column="apprInfo_user" property="userId" jdbcType="BIGINT" />
+      <result column="apprInfo_dept" property="userDeptId" jdbcType="BIGINT" />
+      <result column="apprInfo_desc" property="desc" jdbcType="VARCHAR" />
+      <result column="apprInfo_attachUrl" property="attachUrl" jdbcType="VARCHAR" />
+      <result column="apprInfo_status" property="status" jdbcType="VARCHAR" />
+    </association>
+    <!-- 处理信息 -->
+    <association property="dealInfo" javaType="com.dafy.octopus.worker.order.dto.BillDealInfo">
+      <id column="dealInfo_id" property="id" jdbcType="BIGINT" />
+      <result column="dealInfo_createTime" property="createTime" jdbcType="VARCHAR" />
+      <result column="dealInfo_usedTime" property="usedTime" jdbcType="VARCHAR" />
+      <result column="dealInfo_problem" property="problem" jdbcType="BIGINT" />
+      <result column="dealInfo_subProblem" property="subProblem" jdbcType="BIGINT" />
+      <result column="dealInfo_revi" property="reVisit" jdbcType="VARCHAR" />
+      <result column="dealInfo_reviTime" property="reVisitTime" jdbcType="TIMESTAMP" />
+      <result column="dealInfo_result" property="result" jdbcType="VARCHAR" />
+      <result column="dealInfo_user" property="userId" jdbcType="BIGINT" />
+      <result column="dealInfo_dept" property="userDeptId" jdbcType="BIGINT" />
+      <result column="dealInfo_desc" property="desc" jdbcType="VARCHAR" />
+      <result column="dealInfo_attachUrl" property="attachUrl" jdbcType="VARCHAR" />
+      <result column="dealInfo_status" property="status" jdbcType="VARCHAR" />
+    </association>
+    <!-- 备注列表 -->
+    <collection property="remarkList" column="ID" select="com.dafy.octopus.worker.order.mapper.BillRemarkMapper.selectByBillId" ofType="com.dafy.octopus.worker.order.dto.BillRemark"/>
+      <!--><id column="remark_id" property="id" jdbcType="BIGINT" />
+      <result column="remark_user" property="userId" jdbcType="BIGINT" />
+      <result column="remark_desc" property="remark" jdbcType="VARCHAR" />
+      <result column="remark_createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </collection-->
+    <!-- 操作日志列表 -->
+    <collection property="opLogList" column="ID" select="com.dafy.octopus.worker.order.mapper.BillOpLogMapper.selectByBillId" ofType="com.dafy.octopus.worker.order.dto.BillOpLog"/>
+    <!--&gt;
+      <id column="oplog_id" property="id" jdbcType="BIGINT" />
+      <result column="oplog_dealType" property="dealType" jdbcType="BIGINT" />
+      <result column="oplog_user" property="userId" jdbcType="BIGINT" />
+      <result column="oplog_dept" property="userDeptId" jdbcType="BIGINT" />
+      <result column="oplog_nextDeal" property="nextDeal" jdbcType="VARCHAR" />
+      <result column="oplog_createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </collection-->
+  </resultMap>
+  <select id="findDetailById" parameterType="java.lang.Long" resultMap="DetaiResultMap">
+    select b.ID,b.BILL_NO,b.PARENT_BILL_NO,b.ANSWER_TIME,b.CONNECTOR,b.CONNECTOR_PHONE,b.`DESC`,b.ATTACH_URL,b.`STATUS`,b.CREATE_TIME,b.PRESS_TIMES,b.CREATE_USER,b.CREATE_ORG,
+    b.BILL_STATUS billStatusId,
+    b.URGENT_LEVEL,
+    b.BILL_TYPE billTypeId,
+    b.BIZ_TYPE bizTypeId,
+    b.BIZ_DETAIL_TYPE bizDetailTypeId,
+    b.BILL_SOURCE billSourceId,
+    <!-- 客户信息 -->
+    b.CUSTOMER_ID customer_id,
+    ci.`NAME` customer_name,
+    ci.SEX customer_sex,
+    ci.PHONENO customer_phoneno,
+    ci.CALL_TIME customer_callTime,
+    <!-- 审批信息 -->
+    bai.ID apprInfo_id,
+    bai.USER_ID apprInfo_user,
+    bai.USER_DEPT_ID apprInfo_dept,
+    bai.`DESC` apprInfo_desc,
+    bai.RESULT apprInfo_result,
+    bai.USED_TIME apprInfo_usedTime,
+    bai.ATTACH_URL apprInfo_attachUrl,
+    bai.CREATE_TIME apprInfo_createTime,
+    bai.STATUS apprInfo_status,
+    <!-- 处理信息 -->
+    bdi.ID dealInfo_id,
+    bdi.USER_ID dealInfo_user,
+    bdi.USER_DEPT_ID dealInfo_dept,
+    bdi.`DESC` dealInfo_desc,
+    bdi.PROBLEM dealInfo_problem,
+    bdi.SUBPROBLEM dealInfo_subProblem,
+    bdi.RESULT dealInfo_result,
+    bdi.RE_VISIT dealInfo_revi,
+    bdi.RE_VISIT_TIME dealInfo_reviTime,
+    bdi.USED_TIME dealInfo_usedTime,
+    bdi.ATTACH_URL dealInfo_attachUrl,
+    bdi.CREATE_TIME dealInfo_createTime,
+    bdi.STATUS dealInfo_status,
+    <!-- 工单类型 -->
+    b.BILL_TYPE blt_id,
+    blt.`CODE` blt_code,
+    blt.`NAME` blt_name,
+    <!-- 业务类型 二级菜单-->
+    b.BIZ_TYPE bzt_id,
+    bzt.`CODE` bzt_code,
+    bzt.`NAME` bzt_name,
+    <!-- 业务详情类型 三级-->
+    b.BIZ_DETAIL_TYPE bzdt_id,
+    bzdt.`CODE` bzdt_code,
+    bzdt.`NAME` bzdt_name
+    from T_BILL_INFO b
+    left join T_CUSTOMER_INFO ci on b.CUSTOMER_ID=ci.ID
+    left join T_BILL_TYPE blt on b.BILL_TYPE=blt.ID
+    left join T_BIZ_TYPE bzt on b.BIZ_TYPE=bzt.ID
+    left join T_BIZ_DETAIL_TYPE bzdt on b.BIZ_DETAIL_TYPE=bzdt.ID
+    left join T_BILL_APPROVAL_INFO bai on b.ID=bai.BILL_ID
+    left join T_BILL_DEAL_INFO bdi on b.ID=bdi.BILL_ID
+    where b.ID = #{billId}
+  </select>
+  <sql id="Base_Column_List" >
+    ID, CREATE_ORG, PARENT_BILL_NO, BILL_NO, BILL_STATUS, URGENT_LEVEL, BILL_TYPE, 
+    BIZ_TYPE, BIZ_DETAIL_TYPE, BILL_SOURCE, ANSWER_TIME, CUSTOMER_ID, CONNECTOR, CONNECTOR_PHONE, 
+    `DESC`, ATTACH_URL, STATUS,PRESS_TIMES, CREATE_USER, CREATE_TIME,DEAL_USER
+  </sql>
+  <select id="list" resultMap="ListResultMap" parameterType="java.util.Map">
+      select b.ID,b.BILL_NO,b.PARENT_BILL_NO,b.ANSWER_TIME,b.CONNECTOR,b.CONNECTOR_PHONE,b.`DESC`,b.ATTACH_URL,b.`STATUS`,b.CREATE_TIME,b.PRESS_TIMES,
+      <!-- 委托次数统计 -->
+      (select count(1) from T_BILL_OP_LOG bop where bop.BILL_ID=b.ID and bop.DEAL_TYPE=26) intrust_times,
+      <!-- 工单受理部门--><!-- 工单受理人 --><!-- 工单当前处理部门--><!-- 工单受理人 -->
+      b.CREATE_ORG,b.CREATE_USER,b.DEAL_ORG,b.DEAL_USER,
+      <!-- 工单状态-->
+      b.BILL_STATUS bs_id,
+      (select bs.`NAME` bs_name from T_SYS_CONFIG bs where id = b.BILL_STATUS) bs_name,
+      <!-- 紧急程度-->
+      b.URGENT_LEVEL ul_id,
+      (select bs.`NAME` ul_name from T_SYS_CONFIG bs where id = b.URGENT_LEVEL) ul_name,
+      <!-- 工单来源-->
+      b.BILL_SOURCE bso_id,
+      (select bs.`NAME` bso_name from T_SYS_CONFIG bs where id = b.BILL_SOURCE) bso_name,
+      <!-- 工单类型 -->
+      b.BILL_TYPE blt_id,
+      blt.`CODE` blt_code,
+      blt.`NAME` blt_name,
+      <!-- 业务类型 二级菜单-->
+      b.BIZ_TYPE bzt_id,
+      bzt.`CODE` bzt_code,
+      bzt.`NAME` bzt_name,
+      <!-- 业务详情类型 三级-->
+      b.BIZ_DETAIL_TYPE bzdt_id,
+      bzdt.`CODE` bzdt_code,
+      bzdt.`NAME` bzdt_name,
+      <!-- 客户信息 -->
+      b.CUSTOMER_ID,
+      ci.`NAME` customer_name,
+      ci.SEX customer_sex,
+      ci.PHONENO customer_phoneno,
+      ci.CALL_TIME customer_callTime,
+      <!-- 审批信息 -->
+      bai.ID apprInfo_id,
+      bai.USER_ID apprInfo_user,
+      bai.USER_DEPT_ID apprInfo_dept,
+      bai.`DESC` apprInfo_desc,
+      bai.RESULT apprInfo_result,
+      bai.USED_TIME apprInfo_usedTime,
+      bai.CREATE_TIME apprInfo_createTime,
+      <!-- 处理信息 -->
+      bdi.ID dealInfo_id,
+      bdi.USER_ID dealInfo_user,
+      bdi.USER_DEPT_ID dealInfo_dept,
+      bdi.`DESC` dealInfo_desc,
+      bdi.PROBLEM dealInfo_problem,
+      bdi.RESULT dealInfo_result,
+      bdi.RE_VISIT dealInfo_revi,
+      bdi.RE_VISIT_TIME dealInfo_reviTime,
+      bdi.USED_TIME dealInfo_usedTime,
+      bdi.CREATE_TIME dealInfo_createTime,
+      bdi.`STATUS` dealInfo_status
+      from T_BILL_INFO b
+      left join T_CUSTOMER_INFO ci on b.CUSTOMER_ID=ci.ID
+      left join T_BILL_TYPE blt on b.BILL_TYPE=blt.ID
+      left join T_BIZ_TYPE bzt on b.BIZ_TYPE=bzt.ID
+      left join T_BIZ_DETAIL_TYPE bzdt on b.BIZ_DETAIL_TYPE=bzdt.ID
+      left join T_BILL_APPROVAL_INFO bai on bai.BILL_ID=b.ID
+      left join T_BILL_DEAL_INFO bdi on bdi.BILL_ID=b.ID
+    <where>
+        <!--多条件查询：工单号/客户姓名/联系电话/受理人 FIXME 受理人(创建人)查询-->
+      <if test="params.condition != null and params.condition != ''">
+        and (b.bill_no like '%${params.condition}%' or ci.name like '%${params.condition}%' or b.connector_phone like '%${params.condition}%')
+      </if>
+        <!--时间范围查询 -->
+      <if test="params.createTimeStart != null and params.createTimeEnd != null">
+        and DATE(b.create_time) BETWEEN #{params.createTimeStart} and #{params.createTimeEnd}
+      </if>
+        <!-- 紧急程度查询-->
+    <if test="params.urgent != null and params.urgent != ''">
+        and b.urgent_level = #{params.urgent}
+    </if>
+        <!-- 工单分类查询-->
+    <if test="params.billType != null and params.billType != ''">
+        and b.bill_type = #{params.billType}
+    </if>
+        <!-- 业务分类查询-->
+    <if test="params.bizType != null and params.bizType != ''">
+        and b.biz_type = #{params.bizType}
+    </if>
+        <!-- 业务细分查询-->
+        <if test="params.bizDetailType != null and params.bizDetailType != ''">
+            and b.biz_detail_type = #{params.bizDetailType}
+        </if>
+        <!--待办工单 只有审核中和处理中两种状态 -->
+        <if test="params.upcoming == true">
+            and b.BILL_STATUS in (2,4)
+        </if>
+        <!-- 处理状态查询-->
+        <if test="params.billStatus != null and params.billStatus.size() != 0">
+            and b.bill_status in
+          <foreach collection="params.billStatus" item="id" index="index"
+                                          open="(" close=")" separator=",">
+           #{id}
+          </foreach>
+        </if>
+
+      <if test="params.createOrgId != null">
+        and b.CREATE_ORG = #{params.createOrgId}
+      </if>
+      <if test="params.belongsOrgId != null">
+        and b.BELONGS_ORG = #{params.belongsOrgId}
+      </if>
+      <if test="params.userId != null">
+        and (b.DEAL_USER = #{params.userId}
+        <!-- 待办工单不需要显示创建人的工单 -->
+        <if test="params.upcoming == false">
+        or b.CREATE_USER=#{params.userId}
+        </if>
+        )
+    </if>
+      <if test="params.billId != null">
+        and b.ID = #{params.billId}
+      </if>
+
+    </where>
+      <!--TODO 默认按创建时间逆序 可扩展为传入特定条件排序 -->
+    order by b.create_time desc
+  </select>
+  <!--<select id="findDetailById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from T_BILL_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </select>-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_BILL_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insertSelective" parameterType="com.dafy.octopus.worker.order.dto.Bill" keyColumn="ID" keyProperty="id">
+    insert into T_BILL_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+    <if test="dealOrgId != null" >
+        DEAL_ORG,
+    </if>
+      <if test="createOrgId != null" >
+        CREATE_ORG,
+      </if>
+      <if test="parentBillNo != null" >
+        PARENT_BILL_NO,
+      </if>
+      <if test="billNo != null" >
+        BILL_NO,
+      </if>
+      <if test="billStatusId != null" >
+        BILL_STATUS,
+      </if>
+      <if test="urgentLevelId != null" >
+        URGENT_LEVEL,
+      </if>
+      <if test="billTypeId != null" >
+        BILL_TYPE,
+      </if>
+      <if test="bizTypeId != null" >
+        BIZ_TYPE,
+      </if>
+      <if test="bizDetailTypeId != null" >
+        BIZ_DETAIL_TYPE,
+      </if>
+      <if test="billSourceId != null" >
+        BILL_SOURCE,
+      </if>
+      <if test="answerTime != null" >
+        ANSWER_TIME,
+      </if>
+      <if test="customerId != null" >
+        CUSTOMER_ID,
+      </if>
+      <if test="connector != null" >
+        CONNECTOR,
+      </if>
+      <if test="connectorPhone != null" >
+        CONNECTOR_PHONE,
+      </if>
+      <if test="desc != null" >
+        `DESC`,
+      </if>
+      <if test="attachUrl != null" >
+        ATTACH_URL,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createUserId != null" >
+        CREATE_USER,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="belongsOrgId != null || belongsOrgId != 0">
+        BELONGS_ORG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+        <if test="dealOrgId != null" >
+            #{dealOrgId,jdbcType=BIGINT},
+        </if>
+      <if test="createOrgId != null" >
+        #{createOrgId,jdbcType=BIGINT},
+      </if>
+      <if test="parentBillNo != null" >
+        #{parentBillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="billStatusId != null" >
+        #{billStatusId,jdbcType=BIGINT},
+      </if>
+      <if test="urgentLevelId != null" >
+        #{urgentLevelId,jdbcType=BIGINT},
+      </if>
+      <if test="billTypeId != null" >
+        #{billTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="bizTypeId != null" >
+        #{bizTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="bizDetailTypeId != null" >
+        #{bizDetailTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="billSourceId != null" >
+        #{billSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="answerTime != null" >
+        #{answerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="connector != null" >
+        #{connector,jdbcType=VARCHAR},
+      </if>
+      <if test="connectorPhone != null" >
+        #{connectorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null" >
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="attachUrl != null" >
+        #{attachUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongsOrgId != null || belongsOrgId != 0">
+        #{belongsOrgId,jdbcType=BIGINT},
+      </if>
+    </trim>
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dafy.octopus.worker.order.dto.Bill" >
+    update T_BILL_INFO
+    <set >
+      <if test="dealOrgId != null" >
+        DEAL_ORG = #{dealOrgId,jdbcType=BIGINT},
+      </if>
+      <if test="dealUserId != null" >
+        DEAL_USER = #{dealUserId,jdbcType=BIGINT},
+      </if>
+      <if test="createOrgId != null" >
+        CREATE_ORG = #{createOrgId,jdbcType=BIGINT},
+      </if>
+      <if test="parentBillNo != null" >
+        PARENT_BILL_NO = #{parentBillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        BILL_NO = #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="billStatusId != null" >
+        BILL_STATUS = #{billStatusId,jdbcType=BIGINT},
+      </if>
+      <if test="urgentLevelId != null" >
+        URGENT_LEVEL = #{urgentLevelId,jdbcType=BIGINT},
+      </if>
+      <if test="billTypeId != null" >
+        BILL_TYPE = #{billTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="bizTypeId != null" >
+        BIZ_TYPE = #{bizTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="bizDetailTypeId != null" >
+        BIZ_DETAIL_TYPE = #{bizDetailTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="billSourceId != null" >
+        BILL_SOURCE = #{billSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="answerTime != null" >
+        ANSWER_TIME = #{answerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerId != null" >
+        CUSTOMER_ID = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="connector != null" >
+        CONNECTOR = #{connector,jdbcType=VARCHAR},
+      </if>
+      <if test="connectorPhone != null" >
+        CONNECTOR_PHONE = #{connectorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null" >
+        `DESC` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="attachUrl != null" >
+        ATTACH_URL = #{attachUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createUserId != null" >
+        CREATE_USER = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

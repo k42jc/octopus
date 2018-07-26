@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dafy.octopus.worker.order.mapper.BizTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.dafy.octopus.worker.order.dto.BizType" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="BILL_TYPE_ID" property="billTypeId" jdbcType="BIGINT" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="ORDER" property="order" jdbcType="CHAR" />
+    <result column="DESC" property="desc" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, BILL_TYPE_ID, CODE, `NAME`, STATUS, `ORDER`, `DESC`, CREATE_TIME
+  </sql>
+
+  <select id="selectByBillType" resultMap="BaseResultMap" parameterType="java.lang.Boolean">
+    select * from T_BIZ_TYPE where BILL_TYPE_ID=#{billTypeId}
+      <if test="all == false">
+        and `status`='0'
+      </if>
+     order by `order`
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_BIZ_TYPE
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from T_BIZ_TYPE
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dafy.octopus.worker.order.dto.BizType" >
+    insert into T_BIZ_TYPE (ID, BILL_TYPE_ID, CODE, 
+      `NAME`, STATUS, `ORDER`, `DESC`,
+      CREATE_TIME)
+    values (#{id,jdbcType=BIGINT}, #{billTypeId,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{order,jdbcType=CHAR}, #{desc,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dafy.octopus.worker.order.dto.BizType" >
+    insert into T_BIZ_TYPE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="billTypeId != null" >
+        BILL_TYPE_ID,
+      </if>
+      <if test="code != null" >
+        CODE,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="order != null" >
+        `ORDER`,
+      </if>
+      <if test="desc != null" >
+        `DESC`,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="billTypeId != null" >
+        #{billTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=CHAR},
+      </if>
+      <if test="desc != null" >
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dafy.octopus.worker.order.dto.BizType" >
+    update T_BIZ_TYPE
+    <set >
+      <if test="billTypeId != null" >
+        BILL_TYPE_ID = #{billTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="order != null" >
+        `ORDER` = #{order,jdbcType=CHAR},
+      </if>
+      <if test="desc != null" >
+        `DESC` = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dafy.octopus.worker.order.dto.BizType" >
+    update T_BIZ_TYPE
+    set BILL_TYPE_ID = #{billTypeId,jdbcType=BIGINT},
+      CODE = #{code,jdbcType=VARCHAR},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=CHAR},
+      `ORDER` = #{order,jdbcType=CHAR},
+      `DESC` = #{desc,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

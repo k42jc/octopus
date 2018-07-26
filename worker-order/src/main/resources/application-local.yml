@@ -1,0 +1,106 @@
+#web服务器配置
+server:
+  port: 8891
+  undertow:
+    #io-threads: 128 #默认cpu核心数 最小2
+    worker-threads: 500 #默认io-threads * 8
+    #max-http-post-size:
+  session:
+    timeout: 1800
+##日志配置
+logging:
+  file: logs/octopus-wo-dev.log
+  level:
+    root: ERROR
+    com.apache: DEBUG
+    com.dafy: DEBUG
+    org.springframework.transaction: INFO
+  pattern: #使用Spring源码里面的支持命令行高亮的logback语法
+  #${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5p) %clr(${PID:- }){magenta} %clr(-){faint} %clr([%t]){faint} %clr(%-40.40logger{39}){cyan} %clr([%L]) %clr(:){faint} %m%n%wEx'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } - [%t] %-40.40logger{39} [%L] : %m%n%wEx'
+#spring相关配置
+spring:
+  #数据源
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://host:3306/octopus_worker_order?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: dafy_dev
+    password: dafy_mysql_123
+#    write: 动态数据源时，搭配DynamicDataSourceConfig使用，将30-39行注释放开
+#      driverClassName: com.mysql.jdbc.Driver
+#      url: jdbc:mysql://host:3306/octopus_phone_rental?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#      username: dafy_dev
+#      password: dafy_mysql_123
+#    read:
+#      driverClassName: com.mysql.jdbc.Driver
+#      url: jdbc:mysql://host:3306/octopus_phone_rental?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#      username: dafy_dev
+#      password: dafy_mysql_123
+  #redis
+  redis:
+    host: host
+    port: 6389
+  http:
+    multipart:
+      max-file-size: 21Mb
+      max-request-size: 21Mb
+  #邮件
+  mail:
+    protocol: smtp
+    host: smtp.exmail.qq.com
+    port: 465
+    username: 邮箱地址
+    password: 邮箱密码
+    properties.mail.smtp:
+      connectiontimeout: 5000
+      ssl.enable: true # 使用 SSL 加密通信
+      socketFactory:
+        port: 465 # 加密通信端口号，同通信端口
+        class: javax.net.ssl.SSLSocketFactory # 指定加密连接的工厂类
+        fallback: false # 不验证服务器端证书
+      timeout: 3000
+      writetimeout: 5000
+      auth: true
+      starttls:
+        enable: true
+        required: true
+
+#本项目配置
+config:
+  #线程池配置
+  threadPool:
+    coreThreads: 9
+    maxThreads: 19
+    queueSize: 50
+    namePrefix: dafy-
+  #httpClient配置
+  httpClient:
+    poolMaxTotal: 500
+    defaultPreRoutes: 250
+    requestTimeOut: 30000
+    connectTimeOut: 30000
+    socketTimeOut: 30000
+  cache:
+    defaultExpireTime: 86400 #默认一天过期
+  #应用配置
+  octopus:
+    appKey: '645ba612-370a-43a8-a8e0-993e7a590cf1' #各应用的appKey
+    remoteAuth: #远程服务URL地址
+      #登录地址
+      loginUrl: 'http://10.9.28.53/auth-center/login'
+      #登录成功后，默认重定向到的地址
+      successUrl: '/hello'
+      #未授权重定向到的地址
+      unauthorizedUrl: 'http://10.9.28.53/auth-center/login'
+  #文件上传/下载/导出配置
+  file:
+    upload:
+      type: local #本地文件上传
+      #本地上传目录设置 默认在当前classpath下的upload文件夹
+      save-path: 'asserts'
+      #默认访问url
+      base-url: 'http://10.9.28.53/asserts/'
+    export:
+      type: excel #导出类型为excel

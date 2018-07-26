@@ -1,0 +1,31 @@
+#简单map
+key: value
+#层叠map
+spring:
+  test:
+    key: value
+  test2:
+    key: value2
+#简单list/array
+list:
+  - 1
+  - 2
+  - 3
+#简单list/array
+array: [小胖子,小王,二大爷]
+#list里面包含map
+mapList:
+  -
+    name: 小胖子
+    age: 18
+    sex: m
+  -
+    weight: 260kg
+
+#二位数组
+arrayList:
+  - [小姑娘,白又白]
+  - [小胖子,胖又胖]
+  - [大帅比,帅又帅]
+
+
