@@ -112,6 +112,6 @@ http {
 ## 预览效果
 ![后台API总览](https://github.com/k42jc/octopus/raw/master/%E5%90%8E%E5%8F%B0API%E6%96%87%E6%A1%A3.png)
 ![点击具体API如果未登录要求登录](https://github.com/k42jc/octopus/raw/master/%E9%9C%80%E8%A6%81%E7%99%BB%E5%BD%95.png)
-![登录成功自动跳转到原请求路径](https://github.com/k42jc/octopus/raw/master/%E5%90%8E%E5%8F%B0API%E6%96%87%E6%A1%A3.png)
+![登录成功自动跳转到原请求路径](https://github.com/k42jc/octopus/raw/master/%E5%85%B7%E4%BD%93%E6%A8%A1%E5%9D%97%E7%9A%84api%E6%8E%A5%E5%8F%A3.png)
 
 再访问其他模块api已经检测到登录，不需要再进行登录，直接可以访问
