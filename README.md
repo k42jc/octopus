@@ -27,7 +27,8 @@
 * 进入`octopus`，执行maven命令：`mvn spring-boot:run`运行认证中心(或先`mvn clean compile package -P local`使用具体profile(此处是local)将项目打包成jar，然后进入目录使用`java -jar xx.jar`运行)
 * 进入`worker-order`项目，按上面步骤运行工单系统
 * 配置nginx，参见[nginx配置](#nginx)，然后启动nginx服务
-* 访问`http://localhost/auth-center/`，会显示不同模块的对外api接口，见[预览效果](预览效果)，登录账号密码：test/52387d02f7f7e3ef1977d710fc05e007
+* 访问`http://localhost/auth-center/`，会显示不同模块的对外api接口，见[预览效果](预览效果)
+* 单点登录，账号密码：test/52387d02f7f7e3ef1977d710fc05e007
 
 
 ## nginx配置
@@ -109,4 +110,8 @@ http {
 ```
 
 ## 预览效果
+![后台API总览](https://github.com/k42jc/octopus/raw/master/%E5%90%8E%E5%8F%B0API%E6%96%87%E6%A1%A3.png)
+![点击具体API如果未登录要求登录](https://github.com/k42jc/octopus/raw/master/%E9%9C%80%E8%A6%81%E7%99%BB%E5%BD%95.png)
+![登录成功自动跳转到原请求路径](https://github.com/k42jc/octopus/raw/master/%E9%9C%80%E8%A6%81%E7%99%BB%E5%BD%95.png)
 
+再访问其他模块api已经检测到登录，不需要再进行登录，直接可以访问
